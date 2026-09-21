@@ -50,7 +50,7 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
                             <source src="${fullVideoUrl}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <button class="btn mark-btn" id="btn-${index}" onclick="toggleMark('${filename}', ${index})">Mark for Deletion</button>
+                        <button class="btn mark-btn" id="btn-${index}" onclick="toggleMark('${filename}', ${index})">Mark to Delete</button>
                     `;
                     container.appendChild(div);
                 });
@@ -67,11 +67,11 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
             if (markedFiles.has(filename)) {
                 markedFiles.delete(filename);
                 item.classList.remove('marked');
-                btn.textContent = "To Delete";
+                btn.textContent = "Mark to Delete";
             } else {
                 markedFiles.add(filename);
                 item.classList.add('marked');
-                btn.textContent = "✓ To be deleted";
+                btn.textContent = "✓ Marked to Delete";
             }
             updateSidebar();
         }
