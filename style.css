@@ -1,0 +1,120 @@
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        h1 { font-size: 24px; margin-bottom: 5px; text-align: center; }
+        p.instructions { color: #86868b; margin-bottom: 25px; text-align: center; max-width: 500px; font-size: 16px; }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px; width: 100%; max-width: 900px; margin-bottom: 120px;
+        }
+    
+.photo-card {
+    position: relative;     /* CRITICAL: This traps absolute elements inside the card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+    transition: all 0.3s ease; /* Makes the gray-out transition look smooth */
+}
+
+.photo-label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #333;
+    word-break: break-all; /* Forces long filenames to wrap nicely instead of spilling out */
+    text-align: center;
+}
+        .photo-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        
+        .photo-card.selected { border-color: #ff3b30; background-color: #ffebe9; }
+        .photo-card.selected .photo-label { background-color: #ff3b30; color: white; border-top-color: #ff3b30; }
+.photo-card::before {
+    content: '✕'; position: absolute; top: 8px; right: 8px;
+    background: #ff3b30; color: white; width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 14px; opacity: 0; transform: scale(0.5); transition: all 0.2s ease; z-index: 10;
+}
+/* 3. ADD THIS NEW RULE: Make the X appear when the card is selected */
+.photo-card.selected::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Style applied when the item is marked as deleted */
+.photo-card.deleted {
+    opacity: 0.4;                /* Makes the card semi-transparent */
+    filter: grayscale(100%);     /* Removes all color from the card images/text */
+    pointer-events: none;        /* Optional: Stops users from clicking it again until un-deleted */
+    border: 1px dashed #ccc;     /* Optional: Gives it a subtle dashed border */
+}
+
+        .footer-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 15px 20px; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+            display: flex; justify-content: center; z-index: 100;
+        }
+        .btn { background-color: #0071e3; color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; padding: 25px; border-radius: 16px; max-width: 450px; width: 100%; text-align: center; }
+        textarea { width: 100%; height: 120px; margin: 15px 0; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: monospace; font-size: 14px; resize: none; box-sizing: border-box; }
+
+img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3; /* 👈 Adjust this to match your photo shapes (e.g., 16/9, 1/1) */
+}
+        /* Style for images after they have been submitted */
+.deleted {
+  opacity: 0.3;               /* Dims the photo to make it look ghosted */
+  filter: grayscale(100%);    /* Turns the photo black and white */
+  pointer-events: none;       /* Disables clicking so they can't re-select it */
+  transition: all 0.5s ease;  /* Smooth fade animation effect */
+}
+
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 40px 0; /* Adds spacing above and below the controls */
+    padding: 10px;
+    font-family: sans-serif;
+}
+
+.pagination-controls button {
+    background-color: #ff3b30; /* Matches your red theme color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.pagination-controls button:hover {
+    background-color: #e02e24; /* Darker red on hover */
+}
+
+/* Styles the buttons automatically when disabled on Page 1 or Page 5 */
+.pagination-controls button:disabled {
+    background-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#pageIndicator {
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    color: #333;
+}

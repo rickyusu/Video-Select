@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mary's Photo Selection Tool</title>
+    <link rel="stylesheet" href="style.css" />
+    
+</head>
+<body>
+
+    <h1>Mary's Photo Selection Review</h1>
+    <p class="instructions">Tap or click on any photos you want to <strong>DELETE</strong>. 
+      A red border will mark your selections. When finished, tap the <strong>Submit Selection</strong> button at the bottom.</p>
+
+
+    <div class="grid" id="photoGrid"> <!-- 100 Photos will load here --></div>
+
+<!-- Add this right below your photoGrid div -->
+<div class="pagination-controls">
+  <button id="prevBtn" onclick="changePage(-1)">◀ Previous</button>
+  <span id="pageIndicator">Page 1 of 5</span>
+  <button id="nextBtn" onclick="changePage(1)">Next ▶</button>
+</div>
+
+
+    <div class="footer-bar">
+        
+
+<!-- Add 'event' inside the prepareAndMarkDeleted parentheses -->
+
+<form action="https://api.web3forms.com/submit" method="POST" id="photoForm">
+  <input type="hidden" name="access_key" value="3dda0e4c-6471-46d2-81b4-37a9fc909736">
+  <input type="hidden" name="subject" value="📸 New Photo Selection Received!">
+  
+  <input type="hidden" name="name" value="Jeta Link">
+  <input type="hidden" name="email" value="jetalinkinc@gmail.com">
+
+  <textarea name="message" id="hiddenPhotoList" style="display:none;"></textarea>
+
+   <!-- 1. CHANGE type="submit" TO type="button" AND ADD onclick -->
+  <button class="btn" type="button" onclick="prepareAndMarkDeleted()">Submit Page</button>
+  
+  <!-- 🛠️ ADD THIS HIDDEN NATIVE SUBMIT BUTTON BELOW -->
+  <button type="submit" id="realSubmitBtn" style="display:none;"></button>
+</form>
+
+   <!-- This button clears the memory and reloads the page to restore the photos -->
+  &ensp; &ensp; <button class="btn" type="button" onclick="resetPageMemory()" style="background-color: #ff4d4d; color: white;">
+     Submit All
+   </button>
+
+
+    </div> <!-- footer -->
+
+    
+
+<script src="main.js"></script>
+
+</body>
+</html>
