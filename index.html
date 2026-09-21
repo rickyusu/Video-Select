@@ -21,12 +21,28 @@
             <h3>📝 Selection Summary</h3>
             <div id="marked-count" style="font-weight: 600; color: #57606a;">0 files selected</div>
             <textarea id="marked-list-text" readonly placeholder="No files selected yet..."></textarea>
-            <button class="btn submit-btn" onclick="submitList()">📧 Send List to Admin</button>
+            <!-- For Hiddien Mail Form ***** -->
+            <!-- This is the Submit All Button -->
+
+            <form action="https://api.web3forms.com/submit" method="POST" id="AllVideoForm">
+            <input type="hidden" name="access_key" value="3dda0e4c-6471-46d2-81b4-37a9fc909736">
+            <input type="hidden" name="subject" value="📸 New Video Selection Received!">
+            <input type="hidden" name="name" value="Mary Stump">
+            <input type="hidden" name="email" value="mpatstump@gmail.com">
+            <textarea name="message" id="hiddenAllVideoList" style="display:none;"></textarea>
+            <!-- 1. CHANGE type="submit" TO type="button" AND ADD onclick -->
+            <button class="btn" type="button" onclick="submitAllList()" style="background-color: #384ab1; color: white;">
+                📧 Send List to Admin
+            </button>
+                <!-- 🛠️ ADD THIS HIDDEN NATIVE SUBMIT BUTTON BELOW -->
+            <button type="submit" id="realSubmitAllBtn" style="display:none;"></button>
+
+            </form>
+
         </div>
     </div>
 
 <!-- Comments ***** -->
-
     
 
 <script src="main.js"></script>

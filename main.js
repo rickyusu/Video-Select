@@ -102,6 +102,26 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
             //window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
         }
 
+        function submitAllList() {
+            if (markedFiles.size === 0) {
+                alert("Please mark at least one video before submitting.");
+                return;
+            }
+
+            const fileListText = Array.from(markedFiles).join('\n');
+            
+            // Copy list to clipboard
+            navigator.clipboard.writeText(fileListText);
+
+            const emailListText = decodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
+            // Package names for Web3Forms email delivery
+            document.getElementById('hiddenAllVideoList').value = emailListText; 
+
+            alert("The clean file list has been copied to your clipboard. Your email app will now open.");
+            // Delay sending email
+            document.getElementById('realSubmitAllBtn').click();
+        }
+
 
         // Initialize the app
         init();
