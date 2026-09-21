@@ -17,8 +17,6 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
 
         async function init() {
             const container = document.getElementById('video-list');
-            
-            alert("Start ...");
 
             try {
                 // Fetch the videolist.txt file containing raw filenames
@@ -27,7 +25,6 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
                 
                 const textData = await response.text();
                 
-                alert("videolist.txt - OK");
                 // Split by lines and clear out empty spaces
                 const videoFilenames = textData.split('\n')
                                             .map(line => line.trim())
@@ -43,8 +40,6 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
                 videoFilenames.forEach((filename, index) => {
                     // Combine the base folder link with the filename from text.txt
                     const fullVideoUrl = PCLOUD_BASE_URL + encodeURIComponent(filename);
-
-                    // alert(fullVideoUrl);
 
                     const div = document.createElement('div');
                     div.className = 'video-item';
