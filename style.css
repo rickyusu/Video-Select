@@ -27,14 +27,23 @@
 
         /* 📱 RESPONSIVE IPHONE & MOBILE OVERRIDES */
         @media (max-width: 768px) {
-            .layout { flex-direction: column-reverse; } /* Puts the summary list up top or bottom comfortably */
-            body { margin: 10px auto; padding: 0 10px; }
-            h1 { font-size: 20px; }
-            .sidebar { position: static; margin-bottom: 25px; padding: 15px; }
-            .video-item { padding: 15px; }
-            .video-item h3 { font-size: 16px; }
-            textarea { height: 140px; font-size: 15px; } /* Ensures text on mobile is highly legible */
-            .btn { padding: 14px 20px; font-size: 16px; } /* Larger buttons for fat-finger tapping accuracy */
+            /* Keeps the layout side-by-side but scales the proportions for mobile split screens */
+            .layout { gap: 10px; }
+            
+            /* iPhone: Change the video list from 2-columns down to a single compact column */
+            .video-container { grid-template-columns: 1fr; flex: 1.2; gap: 15px; }
+            
+            /* iPhone: Keep the selection sidebar pinned tightly to the right side */
+            .sidebar { flex: 0.8; min-width: 140px; padding: 10px; position: sticky; top: 10px; }
+            
+            h1 { font-size: 18px; }
+            .video-item { padding: 10px; }
+            .video-item h3 { font-size: 13px; }
+            
+            /* Make text size tightly tailored for narrow sidebar viewing */
+            #marked-count { font-size: 13px !important; }
+            textarea { height: 120px; font-size: 12px; padding: 6px; } 
+            .btn { padding: 10px 5px; font-size: 13px; } 
         }
 
         

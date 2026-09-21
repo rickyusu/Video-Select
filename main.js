@@ -67,11 +67,11 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
             if (markedFiles.has(filename)) {
                 markedFiles.delete(filename);
                 item.classList.remove('marked');
-                btn.textContent = "Mark for Deletion";
+                btn.textContent = "To Delete";
             } else {
                 markedFiles.add(filename);
                 item.classList.add('marked');
-                btn.textContent = "✓ Marked for Deletion";
+                btn.textContent = "✓ To be deleted";
             }
             updateSidebar();
         }
