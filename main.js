@@ -20,7 +20,7 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
 
             try {
                 // Fetch the videolist.txt file containing raw filenames
-                const response = await fetch('videolist.txt');
+                const response = await fetch("https://rickyusu.github.io/VideoSelect/videolist.txt");
                 if (!response.ok) throw new Error("Could not find or read videolist.txt");
                 
                 const textData = await response.text();
@@ -99,7 +99,7 @@ const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/";
             const body = encodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
             
             alert("The clean file list has been copied to your clipboard. Your email app will now open.");
-            window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
+            //window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
         }
 
 
