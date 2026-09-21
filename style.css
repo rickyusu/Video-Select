@@ -1,35 +1,40 @@
 
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 1000px; margin: 30px auto; padding: 0 20px; background-color: #f6f8fa; color: #24292f; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 1000px; margin: 20px auto; padding: 0 15px; background-color: #f6f8fa; color: #24292f; }
+        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; font-size: 24px; }
         
-        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; }
-        
+        /* Layout structures built for side-by-side on desktop */
         .layout { display: flex; gap: 30px; margin-top: 20px; }
-        
         .video-container { flex: 2; }
-        
         .sidebar { flex: 1; background: #ffffff; padding: 20px; border-radius: 6px; border: 1px solid #d0d7de; height: fit-content; position: sticky; top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         
         .video-item { background: #ffffff; border: 1px solid #d0d7de; padding: 20px; margin-bottom: 20px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s; }
-        
+        .video-item h3 { margin-top: 0; font-size: 18px; word-wrap: break-word; }
         .video-item.marked { border-color: #cf222e; background-color: #fff8f8; }
         
-        video { width: 100%; border-radius: 6px; margin: 12px 0; background: #000000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        /* Forces videos to fluidly shrink or grow to fit their frames exactly */
+        video { width: 100%; height: auto; border-radius: 6px; margin: 12px 0; background: #000000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         
-        .btn { padding: 10px 20px; border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; width: 100%; transition: background-color 0.2s; }
-        
+        .btn { padding: 12px 20px; border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px; width: 100%; transition: background-color 0.2s; }
         .mark-btn { background-color: #24292f; color: white; margin-top: 5px; }
-        
         .mark-btn:hover { background-color: #1f2328; }
-        
         .video-item.marked .mark-btn { background-color: #cf222e; }
-        
         .video-item.marked .mark-btn:hover { background-color: #a40e1b; }
-        
         .submit-btn { background-color: #1f883d; color: white; font-size: 16px; margin-top: 15px; }
-        
         .submit-btn:hover { background-color: #1a7f37; }
         
-        textarea { width: 100%; height: 180px; font-family: monospace; margin-top: 12px; padding: 8px; border: 1px solid #d0d7de; border-radius: 6px; box-sizing: border-box; resize: none; background: #f6f8fa; }
+        /* Larger text and padding inside the marked list box */
+        textarea { width: 100%; height: 160px; font-family: monospace; font-size: 16px; margin-top: 12px; padding: 12px; border: 1px solid #d0d7de; border-radius: 6px; box-sizing: border-box; resize: none; background: #f6f8fa; }
 
+        /* 📱 RESPONSIVE IPHONE & MOBILE OVERRIDES */
+        @media (max-width: 768px) {
+            .layout { flex-direction: column-reverse; } /* Puts the summary list up top or bottom comfortably */
+            body { margin: 10px auto; padding: 0 10px; }
+            h1 { font-size: 20px; }
+            .sidebar { position: static; margin-bottom: 25px; padding: 15px; }
+            .video-item { padding: 15px; }
+            .video-item h3 { font-size: 16px; }
+            textarea { height: 140px; font-size: 15px; } /* Ensures text on mobile is highly legible */
+            .btn { padding: 14px 20px; font-size: 16px; } /* Larger buttons for fat-finger tapping accuracy */
+        }
 
         
