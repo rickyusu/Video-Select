@@ -3,55 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mary's Photo Selection Tool</title>
+    <title>Mary's Video Select Tool</title>
     <link rel="stylesheet" href="style.css" />
     
 </head>
 <body>
 
-    <h1>Mary's Photo Selection Review</h1>
-    <p class="instructions">Tap or click on any photos you want to <strong>DELETE</strong>. 
-      A red border will mark your selections. When finished, tap the <strong>Submit Selection</strong> button at the bottom.</p>
+    <h1>Mary's Video Selection Review 📹 Tool</h1>
+    <p>Please review the videos below. Mark the files that should be deleted, then use the sidebar to submit the final list to the administrator.</p>
+   
+    <div class="layout">
+        <!-- Video List -->
+        <div class="video-container" id="video-list">Loading videos from text.txt...</div>
 
+        <!-- Submission Sidebar -->
+        <div class="sidebar">
+            <h3>📝 Selection Summary</h3>
+            <div id="marked-count" style="font-weight: 600; color: #57606a;">0 files selected</div>
+            <textarea id="marked-list-text" readonly placeholder="No files selected yet..."></textarea>
+            <button class="btn submit-btn" onclick="submitList()">📧 Send List to Admin</button>
+        </div>
+    </div>
 
-    <div class="grid" id="photoGrid"> <!-- 100 Photos will load here --></div>
-
-<!-- Add this right below your photoGrid div -->
-<div class="pagination-controls">
-  <button id="prevBtn" onclick="changePage(-1)">◀ Previous</button>
-  <span id="pageIndicator">Page 1 of 5</span>
-  <button id="nextBtn" onclick="changePage(1)">Next ▶</button>
-</div>
-
-
-    <div class="footer-bar">
-        
-
-<!-- Add 'event' inside the prepareAndMarkDeleted parentheses -->
-
-<form action="https://api.web3forms.com/submit" method="POST" id="photoForm">
-  <input type="hidden" name="access_key" value="3dda0e4c-6471-46d2-81b4-37a9fc909736">
-  <input type="hidden" name="subject" value="📸 New Photo Selection Received!">
-  
-  <input type="hidden" name="name" value="Jeta Link">
-  <input type="hidden" name="email" value="jetalinkinc@gmail.com">
-
-  <textarea name="message" id="hiddenPhotoList" style="display:none;"></textarea>
-
-   <!-- 1. CHANGE type="submit" TO type="button" AND ADD onclick -->
-  <button class="btn" type="button" onclick="prepareAndMarkDeleted()">Submit Page</button>
-  
-  <!-- 🛠️ ADD THIS HIDDEN NATIVE SUBMIT BUTTON BELOW -->
-  <button type="submit" id="realSubmitBtn" style="display:none;"></button>
-</form>
-
-   <!-- This button clears the memory and reloads the page to restore the photos -->
-  &ensp; &ensp; <button class="btn" type="button" onclick="resetPageMemory()" style="background-color: #ff4d4d; color: white;">
-     Submit All
-   </button>
-
-
-    </div> <!-- footer -->
+<!-- Comments ***** -->
 
     
 
