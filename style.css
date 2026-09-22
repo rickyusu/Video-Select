@@ -1,53 +1,79 @@
 
     
     
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 1200px; margin: 20px auto; padding: 0 15px; background-color: #f6f8fa; color: #24292f; }
-        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; font-size: 24px; }
-        
-        /* Main Layout Setup */
-        .layout { display: flex; gap: 20px; margin-top: 20px; align-items: flex-start; }
-        
-        /* Computer/Desktop: Video List forces a 2-Column Grid */
-        .video-container { flex: 2; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        
-        /* Sidebar layout rules staying on the right side */
-        .sidebar { flex: 1; min-width: 250px; background: #ffffff; padding: 20px; border-radius: 6px; border: 1px solid #d0d7de; height: fit-content; position: sticky; top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
-        
-        .video-item { background: #ffffff; border: 1px solid #d0d7de; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
-        .video-item h3 { margin-top: 0; font-size: 16px; word-wrap: break-word; margin-bottom: 8px; }
-        .video-item.marked { border-color: #cf222e; background-color: #fff8f8; }
-        
-        video { width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px; background: #000000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        
-        .btn { padding: 12px 20px; border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px; width: 100%; box-sizing: border-box; transition: background-color 0.2s; }
-        .mark-btn { background-color: #24292f; color: white; margin-top: auto; }
-        .mark-btn:hover { background-color: #1f2328; }
-        .video-item.marked .mark-btn { background-color: #cf222e; }
-        .video-item.marked .mark-btn:hover { background-color: #a40e1b; }
-        .submit-btn { background-color: #1f883d; color: white; font-size: 16px; margin-top: 15px; }
-        .submit-btn:hover { background-color: #1a7f37; }
-        
-        textarea { width: 100%; height: 160px; font-family: monospace; font-size: 15px; margin-top: 12px; padding: 12px; border: 1px solid #d0d7de; border-radius: 6px; box-sizing: border-box; resize: none; background: #f6f8fa; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 1200px; margin: 20px auto; padding: 0 15px; background-color: #f6f8fa; color: #24292f; }
+h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; font-size: 24px; }
 
-        /* 📱 RESPONSIVE IPHONE & MOBILE OVERRIDES */
-        @media (max-width: 768px) {
-            /* Keeps the layout side-by-side but scales the proportions for mobile split screens */
-            .layout { gap: 10px; }
-            
-            /* iPhone: Change the video list from 2-columns down to a single compact column */
-            .video-container { grid-template-columns: 1fr; flex: 1.2; gap: 15px; }
-            
-            /* iPhone: Keep the selection sidebar pinned tightly to the right side */
-            .sidebar { flex: 0.8; min-width: 140px; padding: 10px; position: sticky; top: 10px; }
-            
-            h1 { font-size: 18px; }
-            .video-item { padding: 10px; }
-            .video-item h3 { font-size: 13px; }
-            
-            /* Make text size tightly tailored for narrow sidebar viewing */
-            #marked-count { font-size: 13px !important; }
-            textarea { height: 120px; font-size: 12px; padding: 6px; } 
-            .btn { padding: 10px 5px; font-size: 13px; } 
-        }
+/* Main Layout Setup */
+.layout { display: flex; gap: 20px; margin-top: 20px; align-items: flex-start; }
 
-        
+/* Computer/Desktop: Video List forces a 2-Column Grid */
+.video-container { flex: 2; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+/* Sidebar layout rules staying on the right side */
+.sidebar { flex: 1; min-width: 250px; background: #ffffff; padding: 20px; border-radius: 6px; border: 1px solid #d0d7de; height: fit-content; position: sticky; top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
+
+.video-item { background: #ffffff; border: 1px solid #d0d7de; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
+.video-item h3 { margin-top: 0; font-size: 16px; word-wrap: break-word; margin-bottom: 8px; }
+.video-item.marked { border-color: #cf222e; background-color: #fff8f8; }
+
+video { width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px; background: #000000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+
+.btn { padding: 12px 20px; border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px; width: 100%; box-sizing: border-box; transition: background-color 0.2s; }
+.mark-btn { background-color: #24292f; color: white; margin-top: auto; }
+.mark-btn:hover { background-color: #1f2328; }
+.video-item.marked .mark-btn { background-color: #cf222e; }
+.video-item.marked .mark-btn:hover { background-color: #a40e1b; }
+.submit-btn { background-color: #1f883d; color: white; font-size: 16px; margin-top: 15px; }
+.submit-btn:hover { background-color: #1a7f37; }
+
+textarea { width: 100%; height: 160px; font-family: monospace; font-size: 15px; margin-top: 12px; padding: 12px; border: 1px solid #d0d7de; border-radius: 6px; box-sizing: border-box; resize: none; background: #f6f8fa; }
+
+/* 📱 RESPONSIVE IPHONE & MOBILE OVERRIDES */
+@media (max-width: 768px) {
+    /* Keeps the layout side-by-side but scales the proportions for mobile split screens */
+    .layout { gap: 10px; }
+    
+    /* iPhone: Change the video list from 2-columns down to a single compact column */
+    .video-container { grid-template-columns: 1fr; flex: 1.2; gap: 15px; }
+    
+    /* iPhone: Keep the selection sidebar pinned tightly to the right side */
+    .sidebar { flex: 0.8; min-width: 140px; padding: 10px; position: sticky; top: 10px; }
+    
+    h1 { font-size: 18px; }
+    .video-item { padding: 10px; }
+    .video-item h3 { font-size: 13px; }
+    
+    /* Make text size tightly tailored for narrow sidebar viewing */
+    #marked-count { font-size: 13px !important; }
+    textarea { height: 120px; font-size: 12px; padding: 6px; } 
+    .btn { padding: 10px 5px; font-size: 13px; } 
+}
+
+pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.pagination-controls button {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.pagination-controls button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination-controls button:disabled {
+    background-color: #f5f5f5;
+    color: #aaa;
+    cursor: not-allowed;
+}

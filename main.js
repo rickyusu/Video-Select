@@ -4,127 +4,183 @@
 
 // 1. KEEP YOUR ORIGINAL SETUPS
 const PCLOUD_BASE_URL = "https://filedn.com/lTh0v2Bogc301OgoFen42cL/ToDelete/"; 
+const VIDEOLIST_FILE_URL = "https://rickyusu.github.io/VideoSelect/videolist.txt";
+const WebMAIL_access_key = "3dda0e4c-6471-46d2-81b4-37a9fc909736";        // 1. UPDATE YOUR ADMIN EMAIL HERE
+const ADMIN_EMAIL = "rickyusu@gmail.com";
 
 
-        // 1. UPDATE YOUR ADMIN EMAIL HERE
-        const ADMIN_EMAIL = "rickyusu@gmail.com";
+// Configuration
+const itemsPerPage = 24; 
+let currentPage = 1;
+let allVideos = []; // This will hold our parsed array of video names
+// Global array to store selections across pages
+const markedFiles = new Set();
+ 
 
+// 1. Fetch and Parse the text file
+async function loadVideoList() {
+    try {
+        // Fetch the file from your local web server
+        const response = await fetch(VIDEOLIST_FILE_URL);
+        const text = await response.text();
         
-
+        // Split the file by lines and clean up empty rows
+        const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         
+        // Transform full paths into structured objects with clean filenames
+        allVideos = lines.map((filePath, index) => {
+            // Extract just the filename (like %%~nF in batch)
+            const cleanName = filePath.split('\\').pop().split('/').pop().replace(/\.[^/.]+\$/, "");
+            return {
+                id: index + 1,
+                fullName: PCLOUD_BASE_URL+filePath, // Keeps original path if needed for selection tool
+                title: cleanName     // Just the text filename
+            };
+        });
         
-        const markedFiles = new Set();
+        // Load the very first page once data is ready
+        displayPage(1);
+        
+    } catch (error) {
+        console.error("Error reading videolist.txt:", error);
+        document.querySelector('.video-container').innerHTML = "<p>Error loading video list.</p>";
+    }
+}
 
-        async function init() {
-            const container = document.getElementById('video-list');
+// 2. Slice and Display the data for the current page
+function displayPage(page) {
+    currentPage = page;
+    
+    // Core Pagination Math
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedVideos = allVideos.slice(startIndex, endIndex);
 
-            try {
-                // Fetch the videolist.txt file containing raw filenames
-                const response = await fetch("https://rickyusu.github.io/VideoSelect/videolist.txt");
-                if (!response.ok) throw new Error("Could not find or read videolist.txt");
-                
-                const textData = await response.text();
-                
-                // Split by lines and clear out empty spaces
-                const videoFilenames = textData.split('\n')
-                                            .map(line => line.trim())
-                                            .filter(line => line.length > 0);
+    // Render the grid items
+    const videoContainer = document.querySelector('.video-container');
+    videoContainer.innerHTML = paginatedVideos.map(video => `
+        <div id="item-${video.id}" class="video-card" data-filename="${video.fullName}">
+            <video class="video-preview" preload="metadata" controls muted>
+                <source src="${video.fullName}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="btn mark-btn" id="btn-${video.id}" onclick="toggleMark('${video.title}', ${video.id})">Mark to Delete</button>
+            <p title="${video.fullName}">${video.title}</p>
+        </button>
+        </div>
+    `).join('');
 
-                if (videoFilenames.length === 0) {
-                    container.innerHTML = '<p>Your videolist.txt file is empty. Please add filenames to it.</p>';
-                    return;
-                }
+    // Re-draw navigation buttons
+    renderPaginationControls();
+}
 
-                container.innerHTML = ''; 
+// 3. Generate the Page Navigation UI
+function renderPaginationControls() {
+    const totalPages = Math.ceil(allVideos.length / itemsPerPage);
+    const controlsContainer = document.querySelector('.pagination-controls');
+    
+    // Previous Button
+    let html = `
+        <button ${currentPage === 1 ? 'disabled' : ''} onclick="displayPage(${currentPage - 1})">Previous</button>
+    `;
 
-                videoFilenames.forEach((filename, index) => {
-                    // Combine the base folder link with the filename from text.txt
-                    const fullVideoUrl = PCLOUD_BASE_URL + encodeURIComponent(filename);
+    // Smart Pagination: If you have 20+ pages, only show a few windowed buttons
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    
+    if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+    }
 
-                    const div = document.createElement('div');
-                    div.className = 'video-item';
-                    div.id = `item-${index}`; 
-                    div.innerHTML = `
-                        <h3 style="margin-top:0;">📄 ${filename}</h3>
-                        <video controls preload="metadata">
-                            <source src="${fullVideoUrl}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button class="btn mark-btn" id="btn-${index}" onclick="toggleMark('${filename}', ${index})">Mark to Delete</button>
-                    `;
-                    container.appendChild(div);
-                });
+    if (startPage > 1) html += `<button onclick="displayPage(1)">1</button>${startPage > 2 ? '<span>...</span>' : ''}`;
 
-            } catch (err) {
-                container.innerHTML = `<p style="color: #cf222e; font-weight: bold;">Error: ${err.message}</p>`;
-            }
-        }
+    for (let i = startPage; i <= endPage; i++) {
+        html += `
+            <button class="${currentPage === i ? 'active' : ''}" onclick="displayPage(${i})">
+                ${i}
+            </button>
+        `;
+    }
 
-        function toggleMark(filename, index) {
-            const item = document.getElementById(`item-${index}`);
-            const btn = document.getElementById(`btn-${index}`);
+    if (endPage < totalPages) html += `${endPage < totalPages - 1 ? '<span>...</span>' : ''}<button onclick="displayPage(${totalPages})">${totalPages}</button>`;
 
-            if (markedFiles.has(filename)) {
-                markedFiles.delete(filename);
-                item.classList.remove('marked');
-                btn.textContent = "Mark to Delete";
-            } else {
-                markedFiles.add(filename);
-                item.classList.add('marked');
-                btn.textContent = "✓ Marked to Delete";
-            }
-            updateSidebar();
-        }
+    // Next Button
+    html += `
+        <button ${currentPage === totalPages ? 'disabled' : ''} onclick="displayPage(${currentPage + 1})">Next</button>
+    `;
 
-        function updateSidebar() {
-            const countDiv = document.getElementById('marked-count');
-            const textarea = document.getElementById('marked-list-text');
-            
-            countDiv.textContent = `${markedFiles.size} file(s) selected`;
-            textarea.value = markedFiles.size === 0 ? "" : Array.from(markedFiles).join('\n');
-        }
+    controlsContainer.innerHTML = html;
+}
 
-        function submitList() {
-            if (markedFiles.size === 0) {
-                alert("Please mark at least one video before submitting.");
-                return;
-            }
+// Initial load on page opening// Replace your old "displayPhotos();" line at the bottom with this:
+window.onload = function() {
+  loadVideoList();
+  // displayPhotos();
+};
 
-            const fileListText = Array.from(markedFiles).join('\n');
-            
-            // Copy list to clipboard
-            navigator.clipboard.writeText(fileListText);
+//     Old functions
 
-            const subject = encodeURIComponent("Requested Video Deletions");
-            const body = encodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
-            
-            alert("The clean file list has been copied to your clipboard. Your email app will now open.");
-            //window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
-        }
+function toggleMark(filename, index) {
+    const item = document.getElementById(`item-${index}`);
+    const btn = document.getElementById(`btn-${index}`);
 
-        function submitAllList() {
-            if (markedFiles.size === 0) {
-                alert("Please mark at least one video before submitting.");
-                return;
-            }
+    if (markedFiles.has(filename)) {
+        markedFiles.delete(filename);
+        item.classList.remove('marked');
+        btn.textContent = "Mark to Delete";
+    } else {
+        markedFiles.add(filename);
+        item.classList.add('marked');
+        btn.textContent = "✓ Marked to Delete";
+    }
+    updateSidebar();
+}
 
-            const fileListText = Array.from(markedFiles).join('\n');
-            
-            // Copy list to clipboard
-            navigator.clipboard.writeText(fileListText);
+function updateSidebar() {
+    const countDiv = document.getElementById('marked-count');
+    const textarea = document.getElementById('marked-list-text');
+    
+    countDiv.textContent = `${markedFiles.size} file(s) selected`;
+    textarea.value = markedFiles.size === 0 ? "" : Array.from(markedFiles).join('\n');
+}
 
-            const emailListText = decodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
-            // Package names for Web3Forms email delivery
-            document.getElementById('hiddenAllVideoList').value = emailListText; 
+function submitList() {
+    if (markedFiles.size === 0) {
+        alert("Please mark at least one video before submitting.");
+        return;
+    }
 
-            alert("The clean file list has been copied to your clipboard. Your email app will now open.");
-            // Delay sending email
-            document.getElementById('realSubmitAllBtn').click();
-        }
+    const fileListText = Array.from(markedFiles).join('\n');
+    
+    // Copy list to clipboard
+    navigator.clipboard.writeText(fileListText);
 
+    const subject = encodeURIComponent("Requested Video Deletions");
+    const body = encodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
+    
+    alert("The clean file list has been copied to your clipboard. Your email app will now open.");
+    //window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
+}
 
-        // Initialize the app
-        init();
-  
+function submitAllList() {
+    if (markedFiles.size === 0) {
+        alert("Please mark at least one video before submitting.");
+        return;
+    }
+
+    const fileListText = Array.from(markedFiles).join('\n');
+    
+    // Copy list to clipboard
+    navigator.clipboard.writeText(fileListText);
+
+    const emailListText = decodeURIComponent("Hello,\n\nPlease delete the following video files:\n\n" + fileListText + "\n\nThank you.");
+    // Package names for Web3Forms email delivery
+    document.getElementById('hiddenAllVideoList').value = emailListText; 
+
+    alert("The clean file list has been copied to your clipboard. Your email app will now open.");
+    // Delay sending email
+    document.getElementById('realSubmitAllBtn').click();
+}
+
 
         // End of file
