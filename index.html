@@ -7,47 +7,50 @@
     <link rel="stylesheet" href="style.css" />
     
 </head>
-<body>
+<body >
 
     <h1>Mary's Video Selection Review 📹 Tool</h1>
     <p>Please review the videos below. Mark the files that should be deleted, then use the sidebar to submit the final list to the administrator.</p>
    
     <div class="layout">
-        
-        <!-- Your existing video container grid from earlier -->
-        <div class="video-container">
-            <!-- JavaScript will inject video cards here -->
+                
+        <!-- Area 1: Videos and Page Controls (Stays on top/left) -->
+        <div class="content-area">
+            <div class="video-container">
+                <!-- Video cards live here -->
+            </div>
+            
+            <!-- Puts your page buttons directly under the video block -->
+            <div class="pagination-controls">
+                <!-- Buttons live here -->
+            </div>
         </div>
 
-        <!-- Add this right below the video container -->
-        <div class="pagination-controls">
-            <!-- JavaScript will inject navigation buttons here -->
-        </div>
 
-        <!-- Submission Sidebar -->
-        <div class="sidebar">
-            <h3>📝 Selection Summary</h3>
-            <div id="marked-count" style="font-weight: 600; color: #57606a;">0 files selected</div>
-            <textarea id="marked-list-text" readonly placeholder="No files selected yet..."></textarea>
-            <!-- For Hiddien Mail Form ***** -->
-            <!-- This is the Submit All Button -->
+        <!-- Area 2: Sidebar (Stacks beneath page controls on iPhone, moves right on Desktop) -->
+        <aside class="sidebar">
+            <h2>Selected Videos</h2>
+                <div id="marked-count" style="font-weight: 600; color: #57606a;">0 files selected</div>
+                <textarea id="marked-list-text" readonly placeholder="No files selected yet..."></textarea>
+                <!-- For Hiddien Mail Form ***** -->
+                <!-- This is the Submit All Button -->
 
-            <form action="https://api.web3forms.com/submit" method="POST" id="AllVideoForm">
-            <input type="hidden" name="access_key" value="3dda0e4c-6471-46d2-81b4-37a9fc909736">
-            <input type="hidden" name="subject" value="📸 New Video Selection Received!">
-            <input type="hidden" name="name" value="Mary Stump">
-            <input type="hidden" name="email" value="mpatstump@gmail.com">
-            <textarea name="message" id="hiddenAllVideoList" style="display:none;"></textarea>
-            <!-- 1. CHANGE type="submit" TO type="button" AND ADD onclick -->
-            <button class="btn" type="button" onclick="submitAllList()" style="background-color: #18dd71; color: white;">
-                📧 Send List to Admin
-            </button>
-                <!-- 🛠️ ADD THIS HIDDEN NATIVE SUBMIT BUTTON BELOW -->
-            <button type="submit" id="realSubmitAllBtn" style="display:none;"></button>
+                <form action="https://api.web3forms.com/submit" method="POST" id="AllVideoForm">
+                <input type="hidden" name="access_key" value="3dda0e4c-6471-46d2-81b4-37a9fc909736">
+                <input type="hidden" name="subject" value="📸 New Video Selection Received!">
+                <input type="hidden" name="name" value="Mary Stump">
+                <input type="hidden" name="email" value="mpatstump@gmail.com">
+                <textarea name="message" id="hiddenAllVideoList" style="display:none;"></textarea>
+                <!-- 1. CHANGE type="submit" TO type="button" AND ADD onclick -->
+                <button class="btn" type="button" onclick="submitAllList()" style="background-color: #19076b; color: white;">
+                    📧 Send List to Admin
+                </button>
+                    <!-- 🛠️ ADD THIS HIDDEN NATIVE SUBMIT BUTTON BELOW -->
+                <button type="submit" id="realSubmitAllBtn" style="display:none;"></button>
 
-            </form>
+                </form>
+        </aside>
 
-        </div>
     </div>
 
 <!-- Comments ***** -->

@@ -49,27 +49,40 @@ async function loadVideoList() {
 
 // 2. Slice and Display the data for the current page
 function displayPage(page) {
+
     currentPage = page;
     
-    // Core Pagination Math
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedVideos = allVideos.slice(startIndex, endIndex);
 
-    // Render the grid items
     const videoContainer = document.querySelector('.video-container');
-    videoContainer.innerHTML = paginatedVideos.map(video => `
-        <div id="item-${video.id}" class="video-card" data-filename="${video.fullName}">
-            <video class="video-preview" preload="metadata" controls muted>
-                <source src="${video.fullName}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <button class="btn mark-btn" id="btn-${video.id}" onclick="toggleMark('${video.title}', ${video.id})">Mark to Delete</button>
-            <p title="${video.fullName}">${video.title}</p>
-        </button>
-        </div>
-    `).join('');
+    videoContainer.innerHTML = paginatedVideos.map((video, localIndex) => {
+        
+        // FIX: Calculate a completely unique global index for IDs across all pages
+        const globalIndex = startIndex + localIndex;
+        
+        // Check our Set to see if this specific file is currently marked
+        const isMarked = markedFiles.has(video.title);
+        
+        return `
+            <!-- Use globalIndex instead of regular index -->
+            <div id="item-${globalIndex}" class="video-card ${isMarked ? 'marked' : ''}">
+                <video class="video-preview" preload="metadata" controls muted>
+                    <source src="${video.fullName}" type="video/mp4">
+                </video>                
+                <!-- Explicit button markup generation block -->
+                <button id="btn-${globalIndex}" 
+                        class="select-btn" 
+                        onclick="toggleMarkNew('${encodeURIComponent(video.title)}', ${globalIndex})">
+                    ${isMarked ? '✓ Marked to Delete' : 'Mark to Delete'}
+                </button>
+                <p title="${video.fullName}">${video.title}</p>
+            </div>
 
+        `;
+    }).join('');
+    
     // Re-draw navigation buttons
     renderPaginationControls();
 }
@@ -119,6 +132,32 @@ window.onload = function() {
 };
 
 //     Old functions
+
+function toggleMarkNew(encodedFilename, globalIndex) {
+    const filename = decodeURIComponent(encodedFilename);
+    
+    // 1. Get the direct DOM elements for just this card
+    const cardElement = document.getElementById(`item-${globalIndex}`);
+    const buttonElement = document.getElementById(`btn-${globalIndex}`);
+
+    // 2. Toggle the data inside your Set and update just the targeted UI elements
+    if (markedFiles.has(filename)) {
+        markedFiles.delete(filename);
+        
+        // Instant visual update for this card only
+        if (cardElement) cardElement.classList.remove('marked');
+        if (buttonElement) buttonElement.textContent = "Mark to Delete";
+    } else {
+        markedFiles.add(filename);
+        
+        // Instant visual update for this card only
+        if (cardElement) cardElement.classList.add('marked');
+        if (buttonElement) buttonElement.textContent = "✓ Marked to Delete";
+    }
+    
+    // 3. Keep your sidebar synchronized
+    updateSidebar(); 
+}
 
 function toggleMark(filename, index) {
     const item = document.getElementById(`item-${index}`);
