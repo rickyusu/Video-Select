@@ -70,8 +70,15 @@ h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; font-size: 24px; }
     .sidebar {
         flex: 1; 
         min-width: 280px;
-        position: sticky;
-        top: 20px; 
+        
+        /* 2. STICKY COMMANDS */
+        position: -webkit-sticky; /* Support for older Safari versions */
+        position: sticky;         /* Locks the element on screen */
+        top: 20px;                /* Creates a 20px gap at the top of the monitor window when scrolling */
+        
+        /* 3. OPTIONAL: If your selected list gets very long, this lets you scroll inside the sidebar itself */
+        max-height: calc(100vh - 40px); 
+        overflow-y: auto; 
     }
 }
 
