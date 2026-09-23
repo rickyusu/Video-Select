@@ -10,7 +10,7 @@ const ADMIN_EMAIL = "rickyusu@gmail.com";
 
 
 // Configuration
-const itemsPerPage = 24; 
+const itemsPerPage = 30; 
 let currentPage = 1;
 let allVideos = []; // This will hold our parsed array of video names
 // Global array to store selections across pages
@@ -216,9 +216,23 @@ function submitAllList() {
     // Package names for Web3Forms email delivery
     document.getElementById('hiddenAllVideoList').value = emailListText; 
 
-    alert("The clean file list has been copied to your clipboard. Your email app will now open.");
-    // Delay sending email
-    document.getElementById('realSubmitAllBtn').click();
+    alert("The clean file list has been copied to your clipboard. Selection will be sent by email.");
+    if (window.location.protocol.startsWith('http')) {
+        alert("Internet Test Mode: Selection list saved and images grayed out successfully!");
+        // Delay sending email
+        document.getElementById('realSubmitAllBtn').click();
+    } else {
+        // If testing locally (file:///), skip the live submit so the browser doesn't crash
+        alert("💻 Local Test Mode: Selection list saved, copied, and images grayed out successfully!");
+    }
+}
+
+
+function resetPageMemory() {
+  if (confirm("Are you sure you want to restore all photos and clear your selection history?")) {
+    markedFiles.clear();
+    window.location.reload();
+  }
 }
 
 
